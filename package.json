@@ -1,0 +1,21 @@
+{
+  "name": "express-clues",
+  "version": "0.0.1",
+  "description": "Provide clues as an express API",
+  "keywords": [
+    "promises",
+    "stream"
+  ],
+  "author": "Ziggy Jonsson (http://github.com/zjonsson/)",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/ZJONSSON/express-clues"
+  },
+   "dependencies": {
+    "clues": "1.0.x",
+    "when":"2.4.x",
+    "express":"3.4.0"
+  },
+  "main": "index.js",
+  "license": "MIT"
+}
