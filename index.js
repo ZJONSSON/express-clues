@@ -1,5 +1,4 @@
-var express = require("express"),
-    clues = require("clues"),
+var clues = require("clues"),
     when = require("when");
 
 // Standard adaptor for the `when` library to be plugged into `clues.js`
@@ -7,12 +6,12 @@ var adapter = clues.adapter =  {};
 adapter.fulfilled = when.resolve;
 adapter.rejected = when.reject;
 adapter.pending = function () {
-    var deferred = when.defer();
-    return {
-        promise: deferred.promise,
-        fulfill: deferred.resolve,
-        reject: deferred.reject
-    };
+  var deferred = when.defer();
+  return {
+    promise: deferred.promise,
+    fulfill: deferred.resolve,
+    reject: deferred.reject
+  };
 };
 
 // Allow for resolution of multiple clues simultaneously.  The output is an associative
@@ -59,25 +58,24 @@ module.exports = function(api) {
   api.multi = multi;
   api.help = help;
 
-  return express()
-    .all('/:fn?',function(req,res) {
-      clues(api,req.query)
-        .solve(req.param("fn"),{res:res})
-        .then(function(d) {
-          if (req.param("select")) {
-            req.param("select").split(".").forEach(function(key) {
-              d = d && d[key];
-            });
-          }
-          return d;
-        })
-        .then(null,function(e) {
-          // Convert error object to text  
-          if (e.err.message) e.err = { message: e.err.message,stack:e.err.stack};
-          return e;
-        })
-        .then(function(d) {
-          res.end(JSON.stringify(d,null,2));
-        });
-    });
+  return function(req,res) {
+    clues(api,req.query)
+      .solve(req.param("fn"),{res:res})
+      .then(function(d) {
+        if (req.param("select")) {
+          req.param("select").split(".").forEach(function(key) {
+            d = d && d[key];
+          });
+        }
+        return d;
+      })
+      .then(null,function(e) {
+        // Convert error object to text  
+        if (e.err.message) e.err = { message: e.err.message,stack:e.err.stack};
+        return e;
+      })
+      .then(function(d) {
+        res.end(JSON.stringify(d,null,2));
+      });
+  };
 };

@@ -1,8 +1,8 @@
-A simple express wrapper around a clues API.  The `module.exports` is a function that returns an express route when given a custom API object as an argument.  Results for each API call are returned as a JSON string. 
+A simple express wrapper around a clues API.  The `module.exports` is a function that returns an express route when given a custom API object as an argument.  Results for each API call are returned as a JSON string.   The requested function should be specified as `fn` in the query params.
 
 Typical usage from a running express server would be as follows:
 ```
-app.use('/apipath',require('express-clues')(api))
+app.all('/api/:fn',require('express-clues')(api))
 ```
 
 Two standard functions are added to the API:

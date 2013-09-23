@@ -1,6 +1,6 @@
 {
   "name": "express-clues",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Provide clues as an express API",
   "keywords": [
     "promises",
@@ -13,8 +13,7 @@
   },
    "dependencies": {
     "clues": "1.0.x",
-    "when":"2.4.x",
-    "express":"3.4.0"
+    "when":"2.4.x"
   },
   "main": "index.js",
   "license": "MIT"
