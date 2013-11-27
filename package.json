@@ -1,6 +1,6 @@
 {
   "name": "express-clues",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Provide clues as an express API",
   "keywords": [
     "promises",
@@ -12,7 +12,7 @@
     "url": "http://github.com/ZJONSSON/express-clues"
   },
    "dependencies": {
-    "clues": "1.0.x",
+    "clues": "1.1.x",
     "when":"2.4.x"
   },
   "main": "index.js",
