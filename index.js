@@ -75,6 +75,7 @@ module.exports = function(api) {
         return e;
       })
       .then(function(d) {
+        res.set('Content-Type','application/json');
         res.end(JSON.stringify(d,null,2));
       });
   };
