@@ -1,16 +1,16 @@
 var clues = require("clues"),
-    when = require("when");
+    bluebird = require("bluebird");
 
 // Standard adaptor for the `when` library to be plugged into `clues.js`
-var adapter = clues.adapter =  {};
-adapter.fulfilled = when.resolve;
-adapter.rejected = when.reject;
+var adapter = clues.prototype.adapter =  {};
+adapter.fulfilled = bluebird.resolve;
+adapter.rejected = bluebird.reject;
 adapter.pending = function () {
-  var deferred = when.defer();
+  var deferred = bluebird.defer();
   return {
     promise: deferred.promise,
-    fulfill: deferred.resolve,
-    reject: deferred.reject
+    fulfill: function(d) { deferred.resolve(d);},
+    reject: function(d) { deferred.reject(d);}
   };
 };
 
@@ -19,33 +19,31 @@ adapter.pending = function () {
 // simply include argument data with a comma delimited list of the requested 
 // clues.
 
-function multi(data) {
-  var p = when.defer();
+function multi(data,resolve) {
   if (data.split) data = data.split(",");
-
+  var defer = bluebird.defer();
   d = [].concat(data);
   var cnt = d.length,
       res = {};
 
   // Place the inputs into the res
   Object.keys(this.facts).forEach(function(key) {
-    if (key !== 'data') res[key] = this.facts[key];
+    if (key !== 'data' && key !=='multi') res[key] = this.facts[key];
   },this);
 
   var update = function (key) {
     return function(d) {
       res[key] = d;
       if (!(--cnt)) {
-        p.resolve(res);
+        defer.resolve(res);
       }
     };
   };
-
   d.forEach(function(key) {
     this.self.solve(key)
       .then(update(key),update(key));
   },this);
-  return p.promise;
+  return defer.promise;
 }
 
 // Help simply returns all available API functions
@@ -60,7 +58,7 @@ module.exports = function(api) {
 
   return function(req,res) {
     clues(api,req.query)
-      .solve(req.param("fn"),{res:res})
+      .solve(req.param("fn"),{req:req,res:res})
       .then(function(d) {
         if (req.param("select")) {
           req.param("select").split(".").forEach(function(key) {
