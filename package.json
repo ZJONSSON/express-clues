@@ -1,6 +1,6 @@
 {
   "name": "express-clues",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Provide clues as an express API",
   "keywords": [
     "promises",

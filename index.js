@@ -1,6 +1,8 @@
 var clues = require("clues"),
     bluebird = require("bluebird");
 
+bluebird.onPossiblyUnhandledRejection(function(e, promise){});
+
 // Standard adaptor for the `when` library to be plugged into `clues.js`
 var adapter = clues.prototype.adapter =  {};
 adapter.fulfilled = bluebird.resolve;
